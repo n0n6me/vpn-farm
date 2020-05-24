@@ -1,0 +1,47 @@
+- name: install openvpn
+  pkgng:
+    name: "{{ item }}"
+    state: latest
+  with_items: 
+    - openvpn
+    - easy-rsa
+    - perl5
+    - p5-perl-ldap
+    - p5-Authen-Simple-LDAP
+    - p5-Config-Simple
+    - mc
+- name: openvpn enable
+  service: 
+    name: openvpn
+    enabled: yes
+- name: openvpn flags
+  sysrc:
+    name: openvpn_flags
+    value: "--script-security 3"
+- name: gateway enable
+  sysrc:
+    name: gateway_enable
+    value: "YES"
+
+- name: create directories
+  file:
+    path: /usr/local/etc/openvpn
+    state: directory
+  
+- name: copy common files
+  copy:
+    src: /openvpn/
+    dest: /usr/local/etc/openvpn/
+  notify: reloaded opanvpn
+
+- name: copy config
+  template:
+    src: openvpn.j2
+    dest: /usr/local/etc/openvpn/openvpn.conf
+  notify: reloaded opanvpn
+
+- name: set permitions for scripts
+  file:
+    path: /usr/local/etc/openvpn/auth-ldap.pl
+    state: file
+    mode: u+rw,g+x,o+x

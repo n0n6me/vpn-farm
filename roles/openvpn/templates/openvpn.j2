@@ -1,0 +1,28 @@
+port 1194
+proto tcp4
+tls-server
+dev tun
+mssfix 1432
+ca /usr/local/etc/openvpn/keys/ca.crt
+cert /usr/local/etc/openvpn/keys/server.crt
+key /usr/local/etc/openvpn/keys/server.key
+dh /usr/local/etc/openvpn/keys/dh.pem
+topology subnet
+server {{ network }} 255.255.255.0
+push "route 172.16.0.0 255.255.0.0"
+push "dhcp-option DOMAIN company.local"
+push "dhcp-option DNS 172.16.35.10"
+auth-user-pass-verify auth-ldap.pl via-file
+tls-cipher "DEFAULT:@SECLEVEL=0"
+ncp-ciphers AES-256-GCM
+keepalive 10 120
+comp-lzo
+persist-key
+persist-tun
+duplicate-cn
+status-version 3
+status /var/log/openvpn-status.log
+log         /var/log/openvpn.log
+log-append  /var/log/openvpn.log
+management {{ ansible_host }} 7505
+verb 3

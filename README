@@ -1,0 +1,18 @@
+** Ферма OpenVPN для удаленно работы во время COVID-19
+
+Состав:
+  * HAPROXY
+  * OpenVPN
+
+Сгенерируйте все необходимые сертификаты
+ /usr/local/share/easy-rsa/easyrsa.real build-ca nopass
+ /usr/local/share/easy-rsa/easyrsa.real build-server-full server nopass
+ /usr/local/share/easy-rsa/easyrsa.real build-client-full client nopass
+ /usr/local/share/easy-rsa/easyrsa.real gen-dh
+ 
+Скопируйте файлы ключей ca.crt server.key server.crt dh.pem в 
+ roles/openvpn/files/openvpn/keys/
+ 
+Вставьте дааные из ca.crt, client.key и client.crt в 
+ msic/covid-91.ovpn
+ 

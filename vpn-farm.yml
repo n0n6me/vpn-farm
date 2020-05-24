@@ -1,0 +1,12 @@
+---
+- hosts: haproxy
+  gather_facts: no
+  roles:
+    - haproxy
+
+- hosts: openvpn  
+  gather_facts: no
+  roles:
+    - openvpn
+
+
