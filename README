@@ -16,3 +16,6 @@
 Вставьте дааные из ca.crt, client.key и client.crt в 
  msic/covid-91.ovpn
  
+Запустите установку через ansible 
+ansible-playbook -i hosts.yml vpn-farm.yml
+
